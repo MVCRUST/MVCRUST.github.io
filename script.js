@@ -1,6 +1,6 @@
 // ---------- configuration ----------
 // base URL for the DeepRoot API; updated to new hosted endpoint
-const API_BASE = "https://ollama-f182.onrender.com";
+const API_BASE = "https://ollama-f182.onrender.com/swagger/index.html";
 
 // helper to show errors in an element
 function showError(el, message) {
