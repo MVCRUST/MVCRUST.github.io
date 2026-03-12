@@ -43,13 +43,17 @@
     <h5 class="library-title">Current Library</h5>
 
     <div id="documentList">
+        <!-- documents will be populated by script.js -->
+    </div>
 
-<div class="doc-item">
-<span class="doc-name">example.pdf</span>
-<span class="delete-icon">🗑</span>
-</div>
-
-</div>
+    <!-- SERVICE / INDEX STATUS -->
+    <div id="serviceStatus" class="alert alert-info mt-3" role="alert">
+        Checking service...
+    </div>
+    <div id="indexStatus" class="alert alert-secondary mt-2" role="alert">
+        Checking index...
+    </div>
+    <button id="rebuildIndexBtn" class="btn btn-warning btn-sm mb-4">Rebuild Index</button>
 
 </div>
 
