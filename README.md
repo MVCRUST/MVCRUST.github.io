@@ -1,6 +1,6 @@
 # DeepRoot Web Client
 
-This is a minimal front-end for the DeepRoot API located at `http://16.16.70.222`.
+This is a minimal front-end for the DeepRoot API located at `https://ollama-f182.onrender.com` (previously `http://16.16.70.222`).
 
 ## Features
 

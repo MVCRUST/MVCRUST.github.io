@@ -1,5 +1,6 @@
 // ---------- configuration ----------
-const API_BASE = "http://16.16.70.222";
+// base URL for the DeepRoot API; updated to new hosted endpoint
+const API_BASE = "https://ollama-f182.onrender.com";
 
 // helper to show errors in an element
 function showError(el, message) {
