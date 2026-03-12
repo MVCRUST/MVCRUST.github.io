@@ -113,12 +113,27 @@ width:100%;
 .references-box{
 background:#eeeeee;
 border:1px solid #d5d5d5;
-height:120px;
+/* fixed height but allow scroll if too much content */
+max-height:120px;
+height:auto;
+/* let content flow and wrap */
 display:flex;
-align-items:center;
-justify-content:center;
+flex-direction:column;
+align-items:flex-start;
+justify-content:flex-start;
 font-size:18px;
 color:#666;
+padding:10px;
+box-sizing:border-box;
+word-wrap:break-word;
+overflow-wrap:break-word;
+overflow-x:hidden;
+overflow-y:auto;
+}
+
+.references-box ul{
+  padding-left:20px; /* indent list items */
+  margin:0;
 }
 
 /* LIBRARY PAGE */

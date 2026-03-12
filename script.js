@@ -61,6 +61,8 @@ if (promptInput && responseOutput) {
     responseOutput.innerHTML = `<p>Loading...</p>`;
     if (responseTitleEl) responseTitleEl.style.display = "block";
     if (referenceBox) referenceBox.innerHTML = "";
+    // lock input until response arrives
+    promptInput.disabled = true;
 
     try {
       const data = await queryPrompt(prompt);
@@ -82,6 +84,9 @@ if (promptInput && responseOutput) {
       }
     } catch (err) {
       showError(responseOutput, err.message);
+    } finally {
+      // always re-enable input after response or error
+      promptInput.disabled = false;
     }
 
     promptInput.value = "";
