@@ -50,6 +50,8 @@ async function queryPrompt(question) {
 
 const referenceBox = document.getElementById("referencesBox");
 
+const responseTitleEl = document.getElementById("responseTitle");
+
 if (promptInput && responseOutput) {
   promptInput.addEventListener("keypress", async (e) => {
     if (e.key !== "Enter") return;
@@ -57,10 +59,13 @@ if (promptInput && responseOutput) {
     if (!prompt) return;
 
     responseOutput.innerHTML = `<p>Loading...</p>`;
+    if (responseTitleEl) responseTitleEl.style.display = "block";
     if (referenceBox) referenceBox.innerHTML = "";
 
     try {
       const data = await queryPrompt(prompt);
+      // hide title once we have an answer
+      if (responseTitleEl) responseTitleEl.style.display = "none";
       // display answer
       responseOutput.innerHTML = `<p><strong>Answer:</strong> ${data.answer || "(no answer)"}</p>`;
 

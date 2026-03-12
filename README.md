@@ -6,6 +6,7 @@ This is a minimal front-end for the DeepRoot API located at `http://16.16.70.222
 
 - **Prompt page (index.html)**
   - Send natural language questions to `/api/v1/Query` and display answer
+  - The “Prompt Response” heading is hidden once an answer is received
   - Sources are rendered separately in the “References” box below the response
   - Show service health and index status
   - Button to rebuild the index
