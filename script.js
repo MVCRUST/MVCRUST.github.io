@@ -28,6 +28,8 @@ async function queryPrompt(question) {
   return res.json();
 }
 
+const referenceBox = document.getElementById("referencesBox");
+
 if (promptInput && responseOutput) {
   promptInput.addEventListener("keypress", async (e) => {
     if (e.key !== "Enter") return;
@@ -35,16 +37,24 @@ if (promptInput && responseOutput) {
     if (!prompt) return;
 
     responseOutput.innerHTML = `<p>Loading...</p>`;
+    if (referenceBox) referenceBox.innerHTML = "";
+
     try {
       const data = await queryPrompt(prompt);
-      let html = `<p><strong>Answer:</strong> ${data.answer || "(no answer)"}</p>`;
-      if (data.sources && data.sources.length) {
-        html +=
-          '<div><strong>Sources:</strong><ul>' +
-          data.sources.map((s) => `<li>${s}</li>`).join("") +
-          "</ul></div>";
+      // display answer
+      responseOutput.innerHTML = `<p><strong>Answer:</strong> ${data.answer || "(no answer)"}</p>`;
+
+      // display sources in reference box, separate from response
+      if (referenceBox) {
+        if (data.sources && data.sources.length) {
+          referenceBox.innerHTML =
+            '<div><strong>Sources:</strong><ul>' +
+            data.sources.map((s) => `<li>${s}</li>`).join("") +
+            "</ul></div>";
+        } else {
+          referenceBox.innerHTML = "";
+        }
       }
-      responseOutput.innerHTML = html;
     } catch (err) {
       showError(responseOutput, err.message);
     }
