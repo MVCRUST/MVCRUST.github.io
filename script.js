@@ -3,6 +3,14 @@
 const promptInput = document.getElementById("promptInput")
 const responseOutput = document.getElementById("responseOutput")
 
+function getStoredDocuments() {
+  return JSON.parse(localStorage.getItem("documents")) || []
+}
+
+function saveStoredDocuments(docs) {
+  localStorage.setItem("documents", JSON.stringify(docs))
+}
+
 if (promptInput && responseOutput) {
 
 promptInput.addEventListener("keypress", function(e){
@@ -92,23 +100,60 @@ addDocument(file.name)
 
 }
 
-function addDocument(name){
+function addDocument(name, id = null){
 
 if(!documentList) return
+
+const docs = getStoredDocuments()
+
+const docId = id || "temp_" + Date.now()
+
+docs.push({
+  name: name,
+  id: docId
+})
+
+saveStoredDocuments(docs)
+
+renderDocuments()
+
+}
+function renderDocuments(){
+
+if(!documentList) return
+
+documentList.innerHTML = ""
+
+const docs = getStoredDocuments()
+
+docs.forEach(doc => {
 
 const item = document.createElement("div")
 
 item.className = "doc-item"
 
 item.innerHTML = `
-<span class="doc-name">${name}</span>
+<span class="doc-name">${doc.name}</span>
 <span class="delete-icon">🗑</span>
 `
 
-item.querySelector(".delete-icon").onclick = ()=>{
-item.remove()
+item.querySelector(".delete-icon").onclick = () => {
+
+let docs = getStoredDocuments()
+
+docs = docs.filter(d => d.id !== doc.id)
+
+saveStoredDocuments(docs)
+
+renderDocuments()
+
 }
 
 documentList.appendChild(item)
 
+})
+
+}
+if(documentList){
+  renderDocuments()
 }
