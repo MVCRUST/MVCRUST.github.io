@@ -7,6 +7,26 @@ function showError(el, message) {
   el.innerHTML = `<p class="text-danger">${message}</p>`;
 }
 
+// helper to create a progress bar for a named file upload
+function makeFileProgress(name) {
+  if (!progressContainer) return null;
+  const wrapper = document.createElement("div");
+  wrapper.className = "mb-2";
+  wrapper.innerHTML = `
+    <div>${name}</div>
+    <div class="progress">
+      <div class="progress-bar" style="width:0%"></div>
+    </div>`;
+  progressContainer.appendChild(wrapper);
+  const bar = wrapper.querySelector(".progress-bar");
+  return {
+    update: (pct) => {
+      if (bar) bar.style.width = pct + "%";
+    },
+    remove: () => wrapper.remove(),
+  };
+}
+
 // ---------- PROMPT / QUERY ----------
 const promptInput = document.getElementById("promptInput");
 const responseOutput = document.getElementById("responseOutput");
@@ -66,8 +86,10 @@ if (promptInput && responseOutput) {
 // ---------- DOCUMENTS (library) ----------
 const uploadArea = document.getElementById("uploadArea");
 const fileUpload = document.getElementById("fileUpload");
-const progressBar = document.getElementById("uploadProgress");
+const progressContainer = document.getElementById("progressContainer");
 const documentList = document.getElementById("documentList");
+
+console.log("library script initialized", { uploadArea, fileUpload, progressContainer });
 
 async function getDocuments() {
   const res = await fetch(`${API_BASE}/api/v1/Documents`);
@@ -89,13 +111,14 @@ async function removeDocument(fileName) {
 }
 
 async function uploadDocument(file) {
-  if (!progressBar) return;
-  progressBar.style.width = "0%";
-
+  console.log("starting upload", file.name);
+  const progress = makeFileProgress(file.name);
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("POST", `${API_BASE}/api/v1/Documents/upload`);
     xhr.onload = async () => {
+      progress && progress.update(100);
+      console.log("upload onload", xhr.status);
       if (xhr.status === 201) {
         try {
           await renderDocuments();
@@ -109,25 +132,40 @@ async function uploadDocument(file) {
         reject(new Error(`upload failed (${xhr.status})`));
       }
     };
-    xhr.onerror = () => reject(new Error("network error"));
+    xhr.onerror = () => {
+      console.error("xhr network error");
+      reject(new Error("network error"));
+    };
     xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable) {
+      if (event.lengthComputable && progress) {
         const percent = Math.round((event.loaded / event.total) * 100);
-        progressBar.style.width = percent + "%";
+        progress.update(percent);
       }
     };
     const form = new FormData();
     form.append("file", file);
     xhr.send(form);
+  }).finally(() => {
+    // remove progress bar after a short delay so user can see 100%
+    if (progress) setTimeout(() => progress.remove(), 500);
   });
 }
 
 async function handleFiles(files) {
+  console.log("handling files", files);
   for (let file of files) {
     try {
       await uploadDocument(file);
     } catch (e) {
-      console.error(e);
+      console.error("upload error", e);
+      // show message in container
+      if (progressContainer) {
+        const msg = document.createElement("div");
+        msg.className = "text-danger";
+        msg.textContent = `Failed to upload ${file.name}: ${e.message}`;
+        progressContainer.appendChild(msg);
+        setTimeout(() => msg.remove(), 5000);
+      }
     }
   }
 }
@@ -170,6 +208,9 @@ async function renderDocuments() {
         <span class="delete-icon">🗑</span>
       `;
       item.querySelector(".delete-icon").onclick = async () => {
+        if (!confirm(`Delete document '${doc.fileName}'?`)) {
+          return;
+        }
         try {
           await removeDocument(doc.fileName);
           renderDocuments();

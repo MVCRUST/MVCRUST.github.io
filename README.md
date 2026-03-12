@@ -13,6 +13,7 @@ This is a minimal front-end for the DeepRoot API located at `http://16.16.70.222
 - **Library page (library.html)**
   - List documents stored on the server (`GET /api/v1/Documents`)
   - Upload new files (`POST /api/v1/Documents/upload`)
+  - Progress bar now reflects real upload speed, with one bar per file
   - Delete documents (`DELETE /api/v1/Documents/{fileName}`)
   - Display service/index status and rebuild control
 
