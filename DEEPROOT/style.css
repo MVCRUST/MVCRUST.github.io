@@ -1,0 +1,118 @@
+body{
+background:#e9e6e2;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+/* NAVBAR */
+
+.navbar-custom{
+background:#2f5d4f;
+padding:18px;
+}
+
+.logo{
+font-weight:600;
+letter-spacing:1px;
+color:black;
+}
+
+.nav-links{
+display:flex;
+gap:40px;
+}
+
+.nav-link{
+color:#e6e6e6;
+cursor:pointer;
+font-size:18px;
+}
+
+.nav-link:hover{
+color:white;
+}
+
+/* LAYOUT */
+
+.main-layout{
+height:calc(100vh - 70px);
+}
+
+/* SIDEBAR */
+
+.sidebar{
+background:#8d7863;
+padding:25px;
+color:white;
+}
+
+.sidebar-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:18px;
+margin-bottom:30px;
+}
+
+.add-btn{
+background:none;
+border:none;
+color:white;
+font-size:22px;
+cursor:pointer;
+}
+
+.history-item{
+font-size:13px;
+opacity:0.9;
+}
+
+
+/* MAIN AREA */
+
+.main-content{
+padding:40px;
+}
+
+/* INPUT */
+
+.prompt-input{
+margin-bottom:30px;
+}
+
+.prompt-input input{
+text-align:center;
+padding:12px;
+}
+
+
+/* RESPONSE */
+
+.response-box{
+background:#eeeeee;
+border:1px solid #d5d5d5;
+height:320px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+margin-bottom:40px;
+}
+
+.response-title{
+font-size:22px;
+color:#555;
+}
+
+
+/* REFERENCES */
+
+.references-box{
+background:#eeeeee;
+border:1px solid #d5d5d5;
+height:120px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+color:#666;
+}
